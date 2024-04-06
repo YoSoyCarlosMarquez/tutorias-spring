@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: tutorias
+  datasource:
+    url: jdbc:mariadb://127.0.0.1:3306/tutorias?serverTimezone=America/Bogota
+    username: root
+    password:
+    jpa:
+      show-sql: true
+      properties:
+        hibernate:
+          format-sql: true
+server:
+  servlet:
+    context-path: /api
+    #http://localhost:8080/api
+
+
