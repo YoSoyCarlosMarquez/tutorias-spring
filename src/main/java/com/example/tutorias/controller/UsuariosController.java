@@ -56,5 +56,9 @@ public class UsuariosController {
         return map;
     }
 
+    // COMPROMISOS
+    // 1. REALIZAR MÉTODO OBTENER USUARIOS POR ID
+    // 2. REALIZAR MÉTODO ACTUALIZAR UN USUARIO
+
 
 }
