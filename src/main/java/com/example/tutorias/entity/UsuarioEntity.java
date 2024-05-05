@@ -2,6 +2,7 @@ package com.example.tutorias.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "usuarios")
+@Builder
 public class UsuarioEntity {
 
     @Id
@@ -17,6 +19,8 @@ public class UsuarioEntity {
     Integer id;
     String usuario;
     String password;
+    String name;
+    String lastname;
     String estado;
 
     public Integer getId() {
@@ -41,6 +45,22 @@ public class UsuarioEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getEstado() {

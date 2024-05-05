@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuariosService implements IUsuariosService {
@@ -20,6 +21,8 @@ public class UsuariosService implements IUsuariosService {
         UserDTO user = new UserDTO();
         UsuarioEntity usuario = new UsuarioEntity();
         usuario.setUsuario(dto.getUser());
+        usuario.setName(dto.getName());
+        usuario.setLastname(dto.getLastname());
         usuario.setPassword(dto.getPassword());
         usuario.setEstado("A");
         usuario = usuarioRepository.save(usuario);
@@ -42,13 +45,31 @@ public class UsuariosService implements IUsuariosService {
     }
 
     @Override
-    public String getById() {
-        return "getById";
+    public UsuarioEntity getById(Integer id) {
+        Optional<UsuarioEntity> opt = usuarioRepository.findById(id);
+        if (opt.isPresent()) {
+            return opt.get();
+        }
+        UsuarioEntity usuario = new UsuarioEntity();
+        return usuario;
     }
 
     @Override
     public String getByStatus() {
         return "getByStatus";
+    }
+
+    @Override
+    public UsuarioEntity update(UserDTO dto) {
+        UsuarioEntity usuario = new UsuarioEntity();
+        usuario.setId(dto.getId());
+        usuario.setUsuario(dto.getUser());
+        usuario.setPassword(dto.getPassword());
+        usuario.setName(dto.getName());
+        usuario.setLastname(dto.getLastname());
+        usuario.setEstado("A");
+        usuario = usuarioRepository.save(usuario);
+        return usuario;
     }
 
 }

@@ -11,7 +11,8 @@ public interface IUsuariosService {
     List<UsuarioEntity> getAll();
     String login();
     String getByUsername();
-    String getById();
+    UsuarioEntity getById(Integer id);
     String getByStatus();
+    UsuarioEntity update(UserDTO dto);
 
 }
