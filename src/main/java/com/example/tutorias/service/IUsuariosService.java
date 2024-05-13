@@ -7,12 +7,13 @@ import java.util.List;
 
 public interface IUsuariosService {
 
+    UsuarioEntity save(UserDTO dto) throws Exception;
     UsuarioEntity crear(UserDTO dto);
-    List<UsuarioEntity> getAll();
+    List<UsuarioEntity> getAll(String estado);
     String login();
-    String getByUsername();
+    List<UsuarioEntity> getByUsername(String usuario);
     UsuarioEntity getById(Integer id);
     String getByStatus();
-    UsuarioEntity update(UserDTO dto);
+    UsuarioEntity update(UserDTO dto) throws Exception;
 
 }

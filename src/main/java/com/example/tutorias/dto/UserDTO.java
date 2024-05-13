@@ -1,8 +1,6 @@
 package com.example.tutorias.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Data
@@ -10,11 +8,16 @@ import lombok.*;
 @NoArgsConstructor
 public class UserDTO {
 
+    //@Min(value = 0, message = "")
     Integer id;
     //@NotNull(message = "El usuario no puede ser nulo")
     //@NotEmpty(message = "El usuario no puede ser vacio")
     @NotBlank(message = "El usuario no puede ser vacio")
     String user;
+    @Pattern(
+            regexp = "^(?=.*\\d).{8,32}$",
+            flags = Pattern.Flag.UNICODE_CASE,
+            message = "La contraseña debe ser alfanúmerica, contener entre 8 y 32 caracteres")
     String password;
     String name;
     String lastname;

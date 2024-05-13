@@ -1,6 +1,7 @@
 package com.example.tutorias.controller;
 
 import com.example.tutorias.dto.UserDTO;
+import com.example.tutorias.entity.UsuarioEntity;
 import com.example.tutorias.service.IUsuariosService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +45,6 @@ public class UsuariosController {
 
     //DTO -> Data Transfer Objects
 
-    //6 COMPROMISO: VALIDAR QUE LA CONTRASEÑA SEA ALFANUMERICA Y MÍNIMO 8 CARACTERES
-    // MÁXIMO 32 CARACTERES
-    //7 COMPROMISO: VALIDAR QUE EL USUARIO INGRESADO NO SE REPITA EN LA BASE DE DATOS
     @PostMapping("/crear")
     public Map<String, Object> crear(@RequestBody UserDTO data) {
         Map<String, Object> map = new ConcurrentHashMap<>();
@@ -54,35 +52,55 @@ public class UsuariosController {
         return map;
     }
 
-    //1 COMPROMISO: VALIDAR QUE SI EL USUARIO NO EXISTE ME RETORNE UN MENSAJE
-    // DE USUARIO NO ENCONTRADO EN LUGAR DE DATA CON VALORES EN NULL
     @GetMapping("/{id}")
     public Map<String, Object> getById(@PathVariable Integer id) {
+
+        UsuarioEntity user = iUsuariosService.getById(id);
+
         Map<String, Object> map = new ConcurrentHashMap<>();
-        map.put("user", iUsuariosService.getById(id));
+        if (user.getId() != null) {
+            map.put("user", iUsuariosService.getById(id));
+        } else {
+            map.put("message", "Usuario no encontrado");
+        }
         return map;
     }
 
-    //2 COMPROMISO: IMPLEMENTAR FILTRO POR ESTADO
-    @GetMapping("/all")
-    public Map<String, Object> getAll() {
+    @GetMapping("/all/{estado}")
+    public Map<String, Object> getAll(@PathVariable String estado) {
         Map<String, Object> map = new ConcurrentHashMap<>();
-        map.put("users", iUsuariosService.getAll());
+        map.put("users", iUsuariosService.getAll(estado));
         return map;
     }
 
-    //3 COMPROMISO: VALIDAR QUE AL ACTUALIZAR SOLO NOMBRE Y APELLIDO
-    // EL RESTO DE LA INFORMACIÓN NO SEA VACIA
-    //4 COMPROMISO: UNIFICAR LOS MÉTODOS CREAR Y ACTUALIZAR USUARIO
-    //5 COMPRIMISO: VALIDAR CON NOTACIONES QUE EL ID RECIBIDO NO SEA NULL NI VACIO
-    // Y QUE SEA MAYOR O IGUAL A UNO (1)
     @PutMapping("/update")
     public Map<String, Object> update(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
         Map<String, Object> map = new ConcurrentHashMap<>();
         if (bindingResult.hasErrors()) {
             map.put("message", bindingResult.getAllErrors().get(0).getDefaultMessage());
         } else {
-            map.put("user", iUsuariosService.update(userDTO));
+            try {
+                map.put("user", iUsuariosService.update(userDTO));
+            } catch (Exception e) {
+                map.put("message", e.getMessage());
+            }
+        }
+        return map;
+    }
+
+    //COMPROMISO:
+    //Revisar por qué no me deja actualizar un usuario existente
+    @PostMapping("/save")
+    public Map<String, Object> save(@RequestBody @Valid UserDTO data, BindingResult bindingResult) {
+        Map<String, Object> map = new ConcurrentHashMap<>();
+        if (bindingResult.hasErrors()) {
+            map.put("message", bindingResult.getAllErrors().get(0).getDefaultMessage());
+        } else {
+            try {
+                map.put("user", iUsuariosService.save(data));
+            } catch (Exception e) {
+                map.put("message", e.getMessage());
+            }
         }
         return map;
     }
