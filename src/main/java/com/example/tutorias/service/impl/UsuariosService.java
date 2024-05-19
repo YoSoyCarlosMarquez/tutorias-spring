@@ -2,6 +2,7 @@ package com.example.tutorias.service.impl;
 
 import com.example.tutorias.dto.UserDTO;
 import com.example.tutorias.entity.UsuarioEntity;
+import com.example.tutorias.exception.ResourceNotFoundException;
 import com.example.tutorias.repository.UsuarioRepository;
 import com.example.tutorias.service.IUsuariosService;
 import org.apache.coyote.BadRequestException;
@@ -94,10 +95,10 @@ public class UsuariosService implements IUsuariosService {
     }
 
     @Override
-    public UsuarioEntity update(UserDTO dto) throws Exception {
+    public UsuarioEntity update(UserDTO dto) throws ResourceNotFoundException {
         UsuarioEntity usuario = getById(dto.getId());
         if (usuario.getId() == null) {
-            throw new Exception("Usuario con el ID " + dto.getId() + " no existe");
+            throw new ResourceNotFoundException("Usuario con el ID " + dto.getId() + " no existe");
         }
 
         usuario.setName(dto.getName());

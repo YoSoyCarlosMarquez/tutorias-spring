@@ -2,6 +2,7 @@ package com.example.tutorias.service;
 
 import com.example.tutorias.dto.UserDTO;
 import com.example.tutorias.entity.UsuarioEntity;
+import com.example.tutorias.exception.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -14,6 +15,6 @@ public interface IUsuariosService {
     List<UsuarioEntity> getByUsername(String usuario);
     UsuarioEntity getById(Integer id);
     String getByStatus();
-    UsuarioEntity update(UserDTO dto) throws Exception;
+    UsuarioEntity update(UserDTO dto) throws ResourceNotFoundException;
 
 }

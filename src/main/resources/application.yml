@@ -16,3 +16,11 @@ server:
     #http://localhost:8080/api
 
 
+message:
+  exception:
+    badrequest: "BadRequestException custom message"
+    general: ""
+    nofound: "El recurso solicitado no existe"
+    constraintviolation: ""
+
+

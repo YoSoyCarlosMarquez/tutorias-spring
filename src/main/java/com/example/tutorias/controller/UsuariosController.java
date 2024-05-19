@@ -1,10 +1,14 @@
 package com.example.tutorias.controller;
 
+import com.example.tutorias.dto.ResponseDto;
 import com.example.tutorias.dto.UserDTO;
 import com.example.tutorias.entity.UsuarioEntity;
+import com.example.tutorias.exception.ResourceNotFoundException;
 import com.example.tutorias.service.IUsuariosService;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,7 +57,7 @@ public class UsuariosController {
     }
 
     @GetMapping("/{id}")
-    public Map<String, Object> getById(@PathVariable Integer id) {
+    public ResponseDto<Map<String, Object>> getById(@PathVariable Integer id) {
 
         UsuarioEntity user = iUsuariosService.getById(id);
 
@@ -63,7 +67,7 @@ public class UsuariosController {
         } else {
             map.put("message", "Usuario no encontrado");
         }
-        return map;
+        return ResponseDto.create(map);
     }
 
     @GetMapping("/all/{estado}")
@@ -74,22 +78,17 @@ public class UsuariosController {
     }
 
     @PutMapping("/update")
-    public Map<String, Object> update(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
+    public Map<String, Object> update(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult)
+            throws ResourceNotFoundException {
         Map<String, Object> map = new ConcurrentHashMap<>();
         if (bindingResult.hasErrors()) {
             map.put("message", bindingResult.getAllErrors().get(0).getDefaultMessage());
         } else {
-            try {
-                map.put("user", iUsuariosService.update(userDTO));
-            } catch (Exception e) {
-                map.put("message", e.getMessage());
-            }
+            map.put("user", iUsuariosService.update(userDTO));
         }
         return map;
     }
 
-    //COMPROMISO:
-    //Revisar por qué no me deja actualizar un usuario existente
     @PostMapping("/save")
     public Map<String, Object> save(@RequestBody @Valid UserDTO data, BindingResult bindingResult) {
         Map<String, Object> map = new ConcurrentHashMap<>();
@@ -104,5 +103,9 @@ public class UsuariosController {
         }
         return map;
     }
+
+    //COMPROMISO:
+
+    //IMPLEMENTAR SEGURIDAD CON TOKEN JWT
 
 }
